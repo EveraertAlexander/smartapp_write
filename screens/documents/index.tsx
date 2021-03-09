@@ -1,9 +1,14 @@
 import React from 'react';
-import {Text} from 'react-native';
+import { Text, View } from 'react-native';
+import Logo from '../../components/Logo';
 
 const Documents = function({ navigation }: any){
     return(
-        <Text>Documents</Text>
+        <View>
+            <View style={null}>
+                <Logo/>
+            </View>
+        </View>
     );
 }
 
