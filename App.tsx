@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Documents from './screens/documents';
@@ -13,6 +13,7 @@ import { useFonts } from 'expo-font';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { background, neutral } from './styles/colors/theme';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { initWritings } from './utils/db';
 
 const Tab = createBottomTabNavigator();
 
@@ -22,6 +23,10 @@ export default function App() {
     PlayfairDisplay: require('./assets/Playfair_Display/static/PlayfairDisplay-Regular.ttf'),
     PlayfairDisplayBold: require('./assets/Playfair_Display/static/PlayfairDisplay-Bold.ttf')
   })
+
+  useEffect(() => {
+    initWritings();
+  }, [])
 
   const customTabOptions = ({ route }: any) => ({
     tabBarIcon: ({ color, size }: any) => {
