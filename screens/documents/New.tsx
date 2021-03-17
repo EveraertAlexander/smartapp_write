@@ -11,6 +11,7 @@ import { header } from '../../styles/components/header';
 import { card } from './../../styles/components/card';
 import { text } from './../../styles/colors/theme';
 import Note from '../../models/Note';
+import { writings } from '../../utils/db';
 
 const New = function ({ navigation }: any) {
     const [newNote, setNewNote] = useState<Note>({
@@ -20,10 +21,23 @@ const New = function ({ navigation }: any) {
     });
 
 
+    const saveWriting = async () => {
+        if (newNote.title && newNote.author && newNote.text) {
+
+            const insert = await writings.create(newNote);
+
+            console.log({insert})
+
+            if (insert.rowsAffected > 0) {
+                navigation.navigate('Overview');
+            }
+        }
+    }
+
     return (
         <SafeAreaView style={{ ...background.neutral[900], flex: 1, }}>
             <View style={header.container}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>{saveWriting();}}>
                     <Text style={[header.addButton]}>Save</Text>
                 </TouchableOpacity>
                 <Logo />

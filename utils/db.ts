@@ -68,8 +68,8 @@ export const writings = {
             const tx = await transaction(db);
 
             const res = await query(tx, {
-                sql: "",
-                args: [],
+                sql: "INSERT INTO `writings` (id, title, author, note) values(?, ?, ?, ?)",
+                args: [null, n.title, n.author, n.text],
             }).catch((error) => {
                 reject(error);
             });
@@ -79,10 +79,78 @@ export const writings = {
             }
         })
 
+    },
+
+    read: {
+        all: (): Promise<SQLResultSet> => {
+            return new Promise(async function (resolve, reject) {
+                const db = getDb();
+                const tx = await transaction(db);
+
+                const res = await query(tx, {
+                    sql: "SELECT * FROM 'writings'",
+                    args: [],
+                }).catch((error) => {
+                    reject(error);
+                });
+
+                if (res) {
+                    resolve(res)
+                }
+            })
+        },
+        detail: (id: Number): Promise<SQLResultSet> => {
+            return new Promise(async function (resolve, reject) {
+                const db = getDb();
+                const tx = await transaction(db);
+
+                const res = await query(tx, {
+                    sql: "SELECT * FROM 'writings' WHERE id = ?",
+                    args: [id],
+                }).catch((error) => {
+                    reject(error);
+                });
+
+                if (res) {
+                    resolve(res)
+                }
+            })
+        },
+        
+        
+    },
+
+    update: (n: Note): Promise<SQLResultSet> => {
+        return new Promise(async function(resolve, reject) {
+            const db = getDb(),
+                tx = await transaction(db);
+    
+            const res = await query(tx, {
+                sql: "UPDATE `writings` SET title = ? , author = ? , note = ? WHERE id = ?",
+                args: [n.title, n.author, n.text, n.id],
+            }).catch((error) => {
+                reject(error);
+            });
+ 
+            if (res) resolve(res);
+        });
+    },
+
+    delete: (id: Number): Promise<SQLResultSet> => {
+        return new Promise(async function (resolve, reject) {
+            const db = getDb();
+            const tx = await transaction(db);
+
+            const res = await query(tx, {
+                sql: "DELETE FROM 'writings' WHERE id= ?",
+                args: [id],
+            }).catch((error) => {
+                reject(error);
+            });
+
+            if (res) {
+                resolve(res)
+            }
+        })
     }
 }
-
-
-// R read
-// U pdate
-// D elete
